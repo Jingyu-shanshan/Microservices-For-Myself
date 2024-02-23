@@ -53,6 +53,7 @@ dependencies {
     // utilities
     implementation("org.modelmapper:modelmapper:3.1.1")
     compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
 // remove SNAPSHOT-PLAIN.jar

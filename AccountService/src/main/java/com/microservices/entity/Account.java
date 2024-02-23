@@ -1,12 +1,18 @@
 package com.microservices.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Entity
 @Table(name = "account")
-public class Account {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

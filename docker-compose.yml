@@ -3,7 +3,8 @@ version: "3.8"
 services:
   mysqldb:
     platform: linux/amd64 # for macOS M1 chips
-    image: mysql:5.7
+    image: mysql:8
+    container_name: mysqldb
     restart: unless-stopped
     env_file: ./.env
     environment:
@@ -23,14 +24,14 @@ services:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
     environment:
       SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQLDB_DATABASE?useSSL=false",
+        "spring.datasource.url"  : "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQLDB_DATABASE?allowPublicKeyRetrieval=true&useSSL=false",
         "spring.datasource.username" : "$MYSQLDB_USER",
         "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
         "spring.jpa.hibernate.ddl-auto" : "update"
         }'
-    volumes:
-      - .m2:/root/.m2
+    # volumes:
+    #   - .m2:/root/.m2
     stdin_open: true
     tty: true
 

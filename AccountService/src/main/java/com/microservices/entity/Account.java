@@ -1,0 +1,30 @@
+package com.microservices.entity;
+
+import jakarta.persistence.*;
+
+import java.sql.Date;
+
+@Entity
+@Table(name = "account")
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String name;
+    private String accountNumber;
+    private String introduction;
+    private String location;
+    private String websites;
+    private String dateOfBirth;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String userImage;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String userBackgroundImage;
+    private Date dateOfCreate;
+    @Column(nullable = false)
+    private int followingNumber = 0;
+    @Column(nullable = false)
+    private int followerNumber = 0;
+}

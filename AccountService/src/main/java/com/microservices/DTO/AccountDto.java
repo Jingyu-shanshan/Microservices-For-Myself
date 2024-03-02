@@ -12,6 +12,7 @@ public class AccountDto {
     private long id;
     private String name;
     private String accountNumber;
+    private String password;
     private String introduction;
     private String location;
     private String websites;

@@ -20,6 +20,7 @@ plugins {
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.2"
     id("org.flywaydb.flyway") version "9.21.1"
+    id("io.github.ximtech.jasypt-encrypt-plugin") version "1.3.3"
 }
 
 apply(
@@ -54,6 +55,7 @@ dependencies {
     implementation("org.modelmapper:modelmapper:3.1.1")
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
+    implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
 }
 
 // remove SNAPSHOT-PLAIN.jar

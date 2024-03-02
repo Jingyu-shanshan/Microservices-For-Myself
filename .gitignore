@@ -43,3 +43,6 @@ bin/
 
 ### env ###
 .env
+
+### self sh ###
+executeDocker

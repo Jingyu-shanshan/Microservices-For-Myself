@@ -1,4 +1,4 @@
-package com.microservices.DTO;
+package com.microservices.dto;
 
 import lombok.*;
 
@@ -12,6 +12,7 @@ public class AccountDto {
     private long id;
     private String name;
     private String accountNumber;
+    private String email;
     private String password;
     private String introduction;
     private String location;

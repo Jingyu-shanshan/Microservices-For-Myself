@@ -38,7 +38,7 @@ dependencies {
     // spring boot
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("javax.xml.bind:jaxb-api:2.3.1")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.2.3")
 
     // mysql
     implementation("mysql:mysql-connector-java:8.0.31")
@@ -52,10 +52,16 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     // utilities
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("org.modelmapper:modelmapper:3.1.1")
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
+
+    // jwt token
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.3")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
 }
 
 // remove SNAPSHOT-PLAIN.jar

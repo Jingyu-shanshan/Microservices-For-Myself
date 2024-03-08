@@ -1,9 +1,14 @@
 package com.microservices.security;
 
+import com.microservices.exception.AccountApiException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -51,10 +56,20 @@ public class JwtTokenProvider {
 
     // validate JWT token
     public boolean validateToken(String token){
-        Jwts.parser()
-                .verifyWith((SecretKey) key())
-                .build()
-                .parse(token);
-        return true;
+        try{
+            Jwts.parser()
+                    .verifyWith((SecretKey) key())
+                    .build()
+                    .parse(token);
+            return true;
+        }catch (MalformedJwtException malformedJwtException){
+            throw new AccountApiException(HttpStatus.BAD_REQUEST, "Invalid JWT Token");
+        }catch (ExpiredJwtException expiredJwtException){
+            throw new AccountApiException(HttpStatus.BAD_REQUEST, "Expired JWT token");
+        }catch (UnsupportedJwtException unsupportedJwtException){
+            throw new AccountApiException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
+        }catch (IllegalArgumentException illegalArgumentException){
+            throw new AccountApiException(HttpStatus.BAD_REQUEST, "Jwt claims string is null or empty");
+        }
     }
 }

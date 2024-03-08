@@ -3,11 +3,13 @@ package com.microservices.service;
 import com.microservices.dto.AccountLoginDto;
 import com.microservices.entity.Account;
 import com.microservices.entity.Role;
+import com.microservices.exception.AccountApiException;
 import com.microservices.repository.AccountRepository;
 import com.microservices.repository.RoleRepository;
 import com.microservices.security.JwtTokenProvider;
 import com.microservices.service.interfaces.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,11 +45,11 @@ public class AuthService implements IAuthService {
     @Override
     public String register(Account account) {
         if(accountRepository.existsByAccountNumber(account.getAccountNumber())){
-//            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Username is already exists!.");
+            throw new AccountApiException(HttpStatus.BAD_REQUEST, "Account number is already exists!.");
         }
 
         if(accountRepository.existsByEmail(account.getEmail())){
-//            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Email is already exists!.");
+            throw new AccountApiException(HttpStatus.BAD_REQUEST, "Email is already exists!.");
         }
 
         account.setPassword(passwordEncoder.encode(account.getPassword()));

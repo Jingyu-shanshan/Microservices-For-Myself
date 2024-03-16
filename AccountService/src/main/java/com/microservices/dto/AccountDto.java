@@ -1,8 +1,13 @@
 package com.microservices.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Date;
+
+import static com.microservices.constant.DeleteFlag.NOT_DELETED;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,4 +28,5 @@ public class AccountDto {
     private Date dateOfCreate;
     private int followingNumber = 0;
     private int followerNumber = 0;
+    private int deleteFlag = NOT_DELETED.getValue();
 }

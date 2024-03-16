@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 
+import static com.microservices.constant.DeleteFlag.DELETED;
+
 @Service
 public class AccountService implements IAccountService {
     @Autowired
@@ -22,18 +24,34 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account getAccount(long id) {
-        return accountRepository.findById(id).orElseThrow(
+        Account account = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
+        if (account.getDeleteFlag() == DELETED.getValue()){
+            throw new ResourceNotFoundException("Account", "id", id);
+        }
+        return account;
     }
 
     @Override
     public Account updateAccount(Long id, Account account) {
         Account existedAccount = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
+        if (existedAccount.getDeleteFlag() == DELETED.getValue()){
+            throw new ResourceNotFoundException("Account", "id", id);
+        }
+
         updateEntity(account, existedAccount);
         existedAccount.setPassword(passwordEncoder.encode(account.getPassword()));
         accountRepository.save(existedAccount);
         return existedAccount;
+    }
+
+    @Override
+    public void deleteAccount(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "id", id));
+        account.setDeleteFlag(DELETED.getValue());
+        accountRepository.save(account);
     }
 
     private static void updateEntity(Account updatedAccount, Account existedAccount) {

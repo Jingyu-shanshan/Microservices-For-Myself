@@ -7,4 +7,6 @@ public interface IAccountService {
     Account getAccount(long id);
 
     Account updateAccount(Long id, Account account);
+
+    void deleteAccount(Long id);
 }

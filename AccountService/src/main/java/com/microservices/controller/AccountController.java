@@ -33,4 +33,10 @@ public class AccountController {
         AccountDto updatedAccountDto = modelMapper.map(updatedAccount, AccountDto.class);
         return new ResponseEntity<>(updatedAccountDto, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> DeleteAccount(@PathVariable Long id){
+        accountService.deleteAccount(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

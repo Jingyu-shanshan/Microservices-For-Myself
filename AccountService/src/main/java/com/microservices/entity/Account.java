@@ -1,10 +1,13 @@
 package com.microservices.entity;
 
+import com.microservices.constant.DeleteFlag;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
 import java.util.Set;
+
+import static com.microservices.constant.DeleteFlag.NOT_DELETED;
 
 @Entity
 @Table(name = "account")
@@ -34,6 +37,8 @@ public class Account{
     private int followingNumber = 0;
     @Column(nullable = false)
     private int followerNumber = 0;
+    @Column(nullable = false)
+    private int deleteFlag = NOT_DELETED.getValue();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "account_role",

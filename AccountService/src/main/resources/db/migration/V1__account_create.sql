@@ -14,5 +14,6 @@ CREATE TABLE `account` (
   `date_of_create` DATE,
   `following_number` int NOT NULL default 0,
   `follower_number` int NOT NULL default 0,
+  `delete_flag` int NOT NULL default 0,
   PRIMARY KEY (`id`)
 );

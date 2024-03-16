@@ -50,6 +50,10 @@ public class AccountService implements IAccountService {
     public void deleteAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
+        if (account.getDeleteFlag() == DELETED.getValue()){
+            throw new ResourceNotFoundException("Account", "id", id);
+        }
+
         account.setDeleteFlag(DELETED.getValue());
         accountRepository.save(account);
     }

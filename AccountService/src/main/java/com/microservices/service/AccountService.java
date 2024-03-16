@@ -43,8 +43,7 @@ public class AccountService implements IAccountService {
                 Object newValue = field.get(updatedAccount);
                 field.set(existedAccount, newValue);
             } catch (IllegalAccessException e) {
-//                throw new AccountApiException(HttpStatus.BAD_REQUEST, accountClass + ": Class Field:" + field.getName() + " Not Found");
-                throw new AccountApiException(HttpStatus.BAD_REQUEST, e.getMessage());
+                throw new AccountApiException(HttpStatus.BAD_REQUEST, existedAccount.getClass() + ": Class Field:" + field.getName() + " Not Found");
             }
         }
     }

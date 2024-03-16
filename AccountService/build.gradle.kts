@@ -57,6 +57,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
 
     // jwt token
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")

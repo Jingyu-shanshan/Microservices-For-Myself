@@ -23,11 +23,21 @@ public class AccountService implements IAccountService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Account getAccount(long id) {
+    public Account GetAccountDetail(long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
-        if (account.getDeleteFlag() == DELETED.getValue()){
+        if (account.getDeleteFlag() == DELETED.getValue()) {
             throw new ResourceNotFoundException("Account", "id", id);
+        }
+        return account;
+    }
+
+    @Override
+    public Account GetAccountDetail(String accountNumber) {
+        Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "account number", accountNumber));
+        if (account.getDeleteFlag() == DELETED.getValue()) {
+            throw new ResourceNotFoundException("Account", "account number", accountNumber);
         }
         return account;
     }
@@ -36,7 +46,7 @@ public class AccountService implements IAccountService {
     public Account updateAccount(Long id, Account account) {
         Account existedAccount = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
-        if (existedAccount.getDeleteFlag() == DELETED.getValue()){
+        if (existedAccount.getDeleteFlag() == DELETED.getValue()) {
             throw new ResourceNotFoundException("Account", "id", id);
         }
 
@@ -50,7 +60,7 @@ public class AccountService implements IAccountService {
     public void deleteAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
-        if (account.getDeleteFlag() == DELETED.getValue()){
+        if (account.getDeleteFlag() == DELETED.getValue()) {
             throw new ResourceNotFoundException("Account", "id", id);
         }
 
@@ -59,7 +69,7 @@ public class AccountService implements IAccountService {
     }
 
     private static void updateEntity(Account updatedAccount, Account existedAccount) {
-        for (Field field : existedAccount.getClass().getDeclaredFields()){
+        for (Field field : existedAccount.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
                 Object newValue = field.get(updatedAccount);

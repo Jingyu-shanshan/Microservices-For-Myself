@@ -1,5 +1,6 @@
 package com.microservices.service;
 
+import com.microservices.dto.AccountDto;
 import com.microservices.dto.AccountLoginDto;
 import com.microservices.entity.Account;
 import com.microservices.entity.Role;
@@ -43,7 +44,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String register(Account account) {
+    public Account register(Account account) {
         if(accountRepository.existsByAccountNumber(account.getAccountNumber())){
             throw new AccountApiException(HttpStatus.BAD_REQUEST, "Account number is already exists!.");
         }
@@ -61,6 +62,6 @@ public class AuthService implements IAuthService {
 
         accountRepository.save(account);
 
-        return account.getName();
+        return account;
     }
 }

@@ -19,6 +19,7 @@ services:
       - mysqldb
     build: ./AccountService
     restart: on-failure
+    container_name: app
     env_file: ./.env
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
@@ -43,6 +44,7 @@ services:
     volumes:
       - ./Pages/twitter-clone/src:/usr/src/app/src
       - ./Pages/twitter-clone/public:/usr/src/app/public
+    container_name: vueapp
 
 volumes:
   db:

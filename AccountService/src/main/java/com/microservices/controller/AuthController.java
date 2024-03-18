@@ -2,6 +2,7 @@ package com.microservices.controller;
 
 import com.microservices.dto.AccountDto;
 import com.microservices.dto.AccountLoginDto;
+import com.microservices.dto.AccountRegisterDto;
 import com.microservices.entity.Account;
 import com.microservices.payload.JwtAuthResponse;
 import com.microservices.service.interfaces.IAuthService;
@@ -34,11 +35,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AccountDto accountDto){
+    public ResponseEntity<AccountRegisterDto> register(@RequestBody AccountDto accountDto){
         Account account = modelMapper.map(accountDto, Account.class);
 
-        val accountName = authService.register(account);
+        Account getAccount = authService.register(account);
 
-        return new ResponseEntity<>(accountName, HttpStatus.CREATED);
+        AccountRegisterDto accountRegisterDto = modelMapper.map(getAccount, AccountRegisterDto.class);
+
+        return new ResponseEntity<>(accountRegisterDto, HttpStatus.CREATED);
     }
 }

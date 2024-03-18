@@ -6,5 +6,5 @@ import com.microservices.entity.Account;
 public interface IAuthService {
     String login(AccountLoginDto accountLoginDto);
 
-    String register(Account account);
+    Account register(Account account);
 }

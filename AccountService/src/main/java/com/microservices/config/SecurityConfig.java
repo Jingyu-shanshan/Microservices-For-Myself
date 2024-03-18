@@ -1,7 +1,9 @@
 package com.microservices.config;
 
+import com.microservices.security.CustomUserDetailsService;
 import com.microservices.security.JwtAuthenticationEntryPoint;
 import com.microservices.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +24,9 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     private final JwtAuthenticationFilter authenticationFilter;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     public SecurityConfig(JwtAuthenticationEntryPoint authenticationEntryPoint,
                           JwtAuthenticationFilter authenticationFilter){

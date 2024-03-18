@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,13 +22,15 @@ public class AccountController {
     private ModelMapper modelMapper;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AccountDto> GetAccount(@PathVariable Long id) {
-        Account account = accountService.getAccount(id);
+        Account account = accountService.GetAccountDetail(id);
         AccountDto accountDto = modelMapper.map(account, AccountDto.class);
         return ResponseEntity.ok(accountDto);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AccountDto> UpdateAccount(@PathVariable Long id, @Valid @RequestBody AccountDto accountDto){
         Account account = modelMapper.map(accountDto, Account.class);
         Account updatedAccount = accountService.updateAccount(id, account);
@@ -35,8 +39,38 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> DeleteAccount(@PathVariable Long id){
         accountService.deleteAccount(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<AccountDto> getAccountDetail() {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account currentAccount = accountService.GetAccountDetail(currentUsername);
+        AccountDto accountDto = modelMapper.map(currentAccount, AccountDto.class);
+        return ResponseEntity.ok(accountDto);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<AccountDto> UpdateAccount(@Valid @RequestBody AccountDto accountDto){
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account currentAccount = accountService.GetAccountDetail(currentUsername);
+
+        Account account = modelMapper.map(accountDto, Account.class);
+        Account updatedAccount = accountService.updateAccount(currentAccount.getId(), account);
+
+        AccountDto updatedAccountDto = modelMapper.map(updatedAccount, AccountDto.class);
+        return new ResponseEntity<>(updatedAccountDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> DeleteAccount(){
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account currentAccount = accountService.GetAccountDetail(currentUsername);
+
+        accountService.deleteAccount(currentAccount.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

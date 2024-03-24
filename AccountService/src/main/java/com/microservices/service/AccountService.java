@@ -51,7 +51,6 @@ public class AccountService implements IAccountService {
         }
 
         updateEntity(account, existedAccount);
-        existedAccount.setPassword(passwordEncoder.encode(account.getPassword()));
         accountRepository.save(existedAccount);
         return existedAccount;
     }
@@ -73,7 +72,9 @@ public class AccountService implements IAccountService {
             try {
                 field.setAccessible(true);
                 Object newValue = field.get(updatedAccount);
-                field.set(existedAccount, newValue);
+                if (newValue != field.get(existedAccount) && !field.getName().equals("id")){
+                    field.set(existedAccount, newValue);
+                }
             } catch (IllegalAccessException e) {
                 throw new AccountApiException(HttpStatus.BAD_REQUEST, existedAccount.getClass() + ": Class Field:" + field.getName() + " Not Found");
             }

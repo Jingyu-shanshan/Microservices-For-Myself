@@ -15,7 +15,8 @@
         <input type="password" id="password" v-model="password" placeholder="Password" class="input-field">
       </div>
       <div class="form-group">
-        <input type="password" id="confirmPassword" v-model="confirmPassword" placeholder="Confirm Password" class="input-field">
+        <input type="password" id="confirmPassword" v-model="confirmPassword" placeholder="Confirm Password"
+          class="input-field">
       </div>
       <button type="submit" class="submit-button">Register</button>
     </form>
@@ -106,7 +107,7 @@ export default {
 }
 
 .input-field {
-  width: 95%;
+  width: 94%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;

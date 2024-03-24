@@ -3,8 +3,8 @@
         <div v-if="dataLoaded">
             <div class="profile-header">
                 <div>
-                    <img v-if="profile.userBackgroundImage" :src="profile.userBackgroundImage"
-                        class="background-image" alt="Background Image">
+                    <img v-if="profile.userBackgroundImage" :src="profile.userBackgroundImage" class="background-image"
+                        alt="Background Image">
                     <img v-else src="../assets/logo.png" alt="Default Background Image">
                 </div>
                 <div>
@@ -30,11 +30,7 @@
                 </div>
                 <div class="profile-detail">
                     <h3>Websites</h3>
-                    <ul>
-                        <li v-for="website in websites" :key="website">
-                            <a :href="website">{{ profile.website || 'Not specified' }}</a>
-                        </li>
-                    </ul>
+                    <a :href="profile.websites">{{ profile.websites || 'Not specified' }}</a>
                 </div>
                 <div class="profile-detail">
                     <h3>Date of Birth</h3>
@@ -55,6 +51,7 @@
                     <p>{{ profile.followerNumber }}</p>
                 </div>
             </div>
+            <button class="edit-button" @click="goToEditProfile(profile)">Edit Profile</button>
         </div>
         <div v-else>
             <p>Loading...</p>
@@ -65,101 +62,124 @@
 <script setup>
 import axios from '@/auth/axios';
 import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 const profile = ref(null);
 const dataLoaded = ref(false);
+const store = useStore();
+const router = useRouter();
+
+const goToEditProfile = (data) => {
+    store.dispatch('saveJsonData', data);
+    console.log(data)
+    router.push({name: 'EditProfileView'});
+}
 
 onMounted(async () => {
-  try {
-    const response = await axios.get('/api/account/get');
-    console.log(response);
-    if (response.status != 200) {
-      throw new Error('Failed to fetch user data');
+    try {
+        const response = await axios.get('/api/account/get');
+        if (response.status != 200) {
+            throw new Error('Failed to fetch user data');
+        }
+        const profileData = response.data;
+        const jsonString = JSON.stringify(profileData);
+        profile.value = JSON.parse(jsonString);
+
+        dataLoaded.value = true;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
     }
-    const profileData = response.data;
-    const jsonString = JSON.stringify(profileData);
-    profile.value = JSON.parse(jsonString);
-    
-    dataLoaded.value = true;
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  }
 });
 </script>
 
 <style>
 .profile-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #e1e8ed;
-  border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e1e8ed;
+    border-radius: 10px;
 }
 
 .profile-header {
-  text-align: center;
+    text-align: center;
 }
 
 .background-image {
-  width: 100%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .profile-image {
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  border: 3px solid #fff;
-  position: absolute;
-  top: 50px;
-  left: calc(50% - 60px);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    border: 3px solid #fff;
+    position: absolute;
+    top: 50px;
+    left: calc(50% - 60px);
 }
 
 .profile-header h2 {
-  margin-top: 160px;
-  font-size: 24px;
-  font-weight: bold;
+    margin-top: 160px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .profile-header p {
-  font-size: 16px;
-  color: #657786;
+    font-size: 16px;
+    color: #657786;
 }
 
 .profile-details {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .profile-detail {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .profile-detail h3 {
-  font-size: 18px;
-  font-weight: bold;
-  color: #1da1f2;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1da1f2;
 }
 
 .profile-detail p {
-  font-size: 16px;
-  color: #14171a;
+    font-size: 16px;
+    color: #14171a;
 }
 
 .profile-stats {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
 .profile-stat {
-  text-align: center;
+    text-align: center;
 }
 
 .profile-stat h3 {
-  font-size: 18px;
-  font-weight: bold;
-  color: #1da1f2;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1da1f2;
+}
+
+.edit-button {
+    background-color: #1da1f2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #0e71c8;
 }
 </style>

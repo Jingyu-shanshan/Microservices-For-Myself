@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: microservices-for-myself_app
+          env:
+            - name: SPRING_APPLICATION_JSON
+              value: |
+                {
+                  "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/$MYSQLDB_DATABASE?allowPublicKeyRetrieval=true&useSSL=false",
+                  "spring.datasource.username" : "$MYSQLDB_USER",
+                  "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
+                  "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
+                  "spring.jpa.hibernate.ddl-auto" : "update"
+                }
+          ports:
+            - containerPort: 8080

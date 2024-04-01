@@ -13,7 +13,7 @@ class Category(object):
         return '<Comment(name={self.description!r})>'.format(self=self)
 
 
-class Comment(Schema):
+class CategorySchema(Schema):
     id = fields.Number()
     name = fields.Str()
     description = fields.Str()

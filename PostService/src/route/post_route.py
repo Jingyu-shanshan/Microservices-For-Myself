@@ -3,6 +3,7 @@ import json
 
 from src.model.post import Post, PostSchema
 from ..config.mysql import Session
+from ..secure.JWT_token_provider import token_required
 
 post_api_bp = Blueprint('post_api', __name__)
 
@@ -20,14 +21,15 @@ def get_incomes():
         return jsonify({'error': str(e)}), 500
 
 @post_api_bp.route('', methods=['POST'])
-def create_incomes():
+@token_required
+def create_incomes(current_user):
     post_data = PostSchema().load(request.get_json())
     post = Post(**post_data)
     session = Session()
     try:
         session.add(post)
         session.commit()
-        return jsonify({'message': 'User created successfully'}), 201
+        return jsonify({'message': f'{current_user} creates post successfully'}), 201
     except Exception as e:
         session.rollback()
         return jsonify({'error': str(e)}), 500

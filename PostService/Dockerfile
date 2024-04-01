@@ -2,8 +2,10 @@
 FROM python:3.11.3-alpine
 
 # Installing packages
-RUN apk update
+RUN apk add --no-cache build-base
 RUN pip install --no-cache-dir pipenv
+
+RUN apk add --no-cache gcc libffi-dev
 
 # Defining working directory and adding source code
 WORKDIR /usr/src/app

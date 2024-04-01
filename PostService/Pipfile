@@ -10,6 +10,7 @@ mysql-connector-python = "*"
 sqlalchemy = "*"
 marshmallow = "*"
 python-dotenv = "*"
+pyjwt = "*"
 
 [dev-packages]
 

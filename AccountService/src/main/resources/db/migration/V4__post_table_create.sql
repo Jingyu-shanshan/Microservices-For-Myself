@@ -6,5 +6,6 @@ CREATE TABLE `post` (
   `content` varchar(255),
   `type` varchar(255),
   `created_at` DATE,
+  `account_number` varchar(255),
   PRIMARY KEY (`id`)
 );

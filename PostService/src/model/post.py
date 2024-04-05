@@ -13,6 +13,7 @@ class Post(Base):
     content = Column(String(255), nullable=True)
     type = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=dt.datetime.utcnow)
+    account_number = Column(String(255), nullable=True)
 
     def __repr__(self):
         return f'<Post(id={self.id}, title={self.title})>'

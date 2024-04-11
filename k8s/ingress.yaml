@@ -28,8 +28,8 @@ spec:
                 name: account-service-cluster-ip-service
                 port:
                   number: 8080
-          - path: /
-            pathType: Prefix
+          - path: /vue-app(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: vue-app-cluster-ip-service

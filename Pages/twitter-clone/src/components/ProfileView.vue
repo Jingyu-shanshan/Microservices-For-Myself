@@ -78,7 +78,7 @@ const goToEditProfile = (data) => {
 
 onMounted(async () => {
     try {
-        const response = await axios.get('/api/account/get');
+        const response = await axios.get('/account-service/api/account/get');
         if (response.status != 200) {
             throw new Error('Failed to fetch user data');
         }

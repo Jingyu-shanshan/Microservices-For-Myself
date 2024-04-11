@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-service-deployment
+  namespace: twitter-clone
+spec:
+  replicas: {{ .Values.accountService.replicas }}
+  selector:
+    matchLabels:
+      component: account-service
+  template:
+    metadata:
+      labels:
+        component: account-service
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.accountService.image.repository }}:{{ .Values.accountService.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: {{ printf "jdbc:mysql://%s:%d/%s" .Values.mysql.host (int .Values.mysql.port) .Values.mysql.database }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.mysql.username }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.mysql.password }}
+            - name: FLYWAY_URL
+              value: {{ printf "jdbc:mysql://%s:%d/%s" .Values.mysql.host (int .Values.mysql.port) .Values.mysql.database }}
+            - name: FLYWAY_SCHEMAS
+              value: microservices_db
+            - name: FLYWAY_ACCOUNT
+              value: {{ .Values.mysql.username }}
+            - name: FLYWAY_PASSWORD
+              value: {{ .Values.mysql.password }}
+            - name: APP_JWT_SECRET
+              value: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
+            - name: APP_JWT_EXPIRATION_MILLISECONDS
+              value: "604800000"

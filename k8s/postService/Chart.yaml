@@ -1,0 +1,4 @@
+apiVersion: v2
+name: post-service
+description: A Helm chart for deploying the post-service microservice
+version: 0.1.0

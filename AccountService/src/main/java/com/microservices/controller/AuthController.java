@@ -6,7 +6,6 @@ import com.microservices.dto.AccountRegisterDto;
 import com.microservices.entity.Account;
 import com.microservices.payload.JwtAuthResponse;
 import com.microservices.service.interfaces.IAuthService;
-import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

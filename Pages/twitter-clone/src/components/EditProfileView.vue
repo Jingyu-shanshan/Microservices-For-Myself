@@ -54,7 +54,7 @@ const saveProfile = async () => {
     try {
         // Call API to save profile data
         console.log(profile)
-        const response = await axios.put('/api/account/update', profile.value, {
+        const response = await axios.put('/account-service/api/account/update', profile.value, {
             headers: {
                 'Content-Type': 'application/json'
             }

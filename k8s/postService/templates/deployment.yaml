@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service-deployment
+  namespace: twitter-clone
+spec:
+  replicas: {{ .Values.postService.replicas }}
+  selector:
+    matchLabels:
+      component: post-service
+  template:
+    metadata:
+      labels:
+        component: post-service
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.postService.image.repository }}:{{ .Values.postService.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8082
+          env:
+            - name: MYSQLDB_USER
+              value: {{ .Values.mysql.username }}
+            - name: MYSQLDB_ROOT_PASSWORD
+              value: {{ .Values.mysql.password }}
+            - name: MYSQLDB_DATABASE
+              value: {{ .Values.mysql.database }}
+            - name: MYSQLDB_HOST
+              value: {{ .Values.mysql.host }}

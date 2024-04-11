@@ -10,6 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+RUN apt-get update && apt-get install apt-file -y && apt-file update && apt-get install vim -y
+
 # Copy all files from the current directory to the working directory
 COPY . .
 

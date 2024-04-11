@@ -1,0 +1,4 @@
+apiVersion: v2
+name: twitter-clone
+description: A Helm chart for deploying the account-service microservice
+version: 0.1.0

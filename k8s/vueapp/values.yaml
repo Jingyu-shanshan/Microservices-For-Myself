@@ -1,0 +1,5 @@
+vueApp:
+  replicas: 1
+  image:
+    repository: microservices-for-myself_vue_app
+    tag: v1.0.8

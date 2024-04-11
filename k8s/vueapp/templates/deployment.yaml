@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-app-deployment
+  namespace: twitter-clone
+spec:
+  replicas: {{ .Values.vueApp.replicas }}
+  selector:
+    matchLabels:
+      component: vue-app
+  template:
+    metadata:
+      labels:
+        component: vue-app
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.vueApp.image.repository }}:{{ .Values.vueApp.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8081

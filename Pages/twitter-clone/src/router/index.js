@@ -3,6 +3,9 @@ import LoginView from '../components/LoginView.vue';
 import RegisterView from '../components/RegisterView.vue';
 import ProfileView from '../components/ProfileView.vue';
 import EditProfileView from '../components/EditProfileView.vue';
+import PostView from '../components/PostView.vue';
+import CreatePostView from '../components/CreatePostView.vue';
+import MyPostView from '../components/MyPostView.vue';
 
 const routes = [
   {
@@ -24,6 +27,21 @@ const routes = [
     path: '/edit-profile',
     name: 'EditProfileView',
     component: EditProfileView
+  },
+  {
+    path: '/posts',
+    name: 'PostView',
+    component: PostView
+  },
+  {
+    path: '/my/posts',
+    name: 'MyPostView',
+    component: MyPostView
+  },
+  {
+    path: '/create-post',
+    name: 'CreatePostView',
+    component: CreatePostView
   }
 ];
 

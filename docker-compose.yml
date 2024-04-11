@@ -37,16 +37,16 @@ services:
     stdin_open: true
     tty: true
 
-  # vueapp:
-  #   depends_on:
-  #     - mysqldb
-  #   build: ./Pages/twitter-clone
-  #   ports:
-  #     - "8081:8081"
-  #   volumes:
-  #     - ./Pages/twitter-clone/src:/usr/src/app/src
-  #     - ./Pages/twitter-clone/public:/usr/src/app/public
-  #   container_name: vueapp
+  vueapp:
+    depends_on:
+      - mysqldb
+    build: ./Pages/twitter-clone
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./Pages/twitter-clone/src:/usr/src/app/src
+      - ./Pages/twitter-clone/public:/usr/src/app/public
+    container_name: vueapp
   
   post_service:
     depends_on:

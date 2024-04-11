@@ -3,15 +3,15 @@
         <div v-if="dataLoaded">
             <div class="profile-header">
                 <div>
-                    <img v-if="profile.userBackgroundImage" :src="profile.userBackgroundImage" class="background-image"
-                        alt="Background Image">
-                    <img v-else src="../assets/logo.png" alt="Default Background Image">
+                    <img v-if="profile.userImage" :src="profile.userImage" class="profile-image"
+                        alt="User Image">
+                    <img v-else src="../assets/logo.png" alt="Default User Image">
                 </div>
-                <div>
+                <!-- <div>
                     <img v-if="profile.userImage" :src="profile.userImage" class="background-image"
                         alt="Background Image">
                     <img v-else src="../assets/logo.png" alt="Default Background Image">
-                </div>
+                </div> -->
                 <h2>{{ profile.name }}</h2>
                 <p>@{{ profile.accountNumber }}</p>
             </div>
@@ -105,10 +105,12 @@ onMounted(async () => {
 
 .profile-header {
     text-align: center;
+    height: 300px;
 }
 
 .background-image {
-    width: 100%;
+    width: 1%;
+    height: auto; 
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }

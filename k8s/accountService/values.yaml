@@ -2,7 +2,7 @@ accountService:
   replicas: 1
   image:
     repository: microservices-for-myself_account_service
-    tag: v1.0.2
+    tag: v1.0.1
 
 mysql:
   host: mysql-cluster-ip-service

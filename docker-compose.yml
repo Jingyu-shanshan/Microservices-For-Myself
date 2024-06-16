@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mysqldb:
-    platform: linux/amd64 # for macOS M1 chips
+    platform: linux/arm64 # for macOS M1 chips
     image: mysql:8
     container_name: mysqldb
     restart: unless-stopped

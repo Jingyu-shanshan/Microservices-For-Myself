@@ -11,10 +11,10 @@ import java.util.Set;
 import static com.microservices.constant.DeleteFlag.NOT_DELETED;
 
 @Entity
-@Table(name = "account")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "account")
 public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class Account{
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB")
     private String userBackgroundImage;
-    private Date dateOfCreate;
+    private Date createDate;
     @Column(nullable = false)
     private int followingNumber = 0;
     @Column(nullable = false)

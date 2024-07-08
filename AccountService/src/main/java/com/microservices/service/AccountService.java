@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 
@@ -43,6 +44,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    @Transactional
     public Account updateAccount(Long id, Account account) {
         Account existedAccount = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
@@ -56,6 +58,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    @Transactional
     public void deleteAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", id));
@@ -65,6 +68,16 @@ public class AccountService implements IAccountService {
 
         account.setDeleteFlag(DELETED.getValue());
         accountRepository.save(account);
+    }
+
+    @Override
+    public Account getAccount(String nameOrEmail) {
+        Account account = accountRepository.findByAccountNumberOrEmail(nameOrEmail, nameOrEmail).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "account name or Email", nameOrEmail));
+        if (account.getDeleteFlag() == DELETED.getValue()) {
+            throw new ResourceNotFoundException("Account", "account name or Email", nameOrEmail);
+        }
+        return account;
     }
 
     private static void updateEntity(Account updatedAccount, Account existedAccount) {

@@ -36,6 +36,22 @@ def get_incomes_by_username(current_user):
     finally:
         session.close()
 
+@post_api_bp.route('<int:post_id>', methods=['GET'])
+def get_incomes_by_id(post_id):
+    session = Session()
+    try:
+        post = session.query(Post).filter_by(id=post_id).first()
+        if post is None:
+            return jsonify({'message': 'Post not found'}), 404
+
+        result = json.dumps(post, sort_keys=False)
+        return result, 200, {'Content-Type': 'application/json'}
+    except Exception as e:
+        session.rollback()
+        return jsonify({'message': 'An error occurred', 'error': str(e)}), 500
+    finally:
+        session.close()
+
 @post_api_bp.route('', methods=['POST'])
 @token_required
 def create_post(current_user):
@@ -95,4 +111,7 @@ def delete_post(current_user, post_id):
         
         return jsonify({'message': 'Post deleted successfully'}), 200
     except Exception as e:
-        return jsonify({'message': 'An error occurred', 'error': str(e)}), 500
+        session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        session.close()

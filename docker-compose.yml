@@ -37,30 +37,55 @@ services:
     stdin_open: true
     tty: true
 
-  vueapp:
+  like_service:
     depends_on:
       - mysqldb
-    build: ./Pages/twitter-clone
-    ports:
-      - "8081:8081"
-    volumes:
-      - ./Pages/twitter-clone/src:/usr/src/app/src
-      - ./Pages/twitter-clone/public:/usr/src/app/public
-    container_name: vueapp
-  
-  post_service:
-    depends_on:
-      - mysqldb
-    build: ./PostService
+    build: ./LikeService
     restart: on-failure
-    container_name: post_service
+    container_name: like_service
     env_file: ./.env
     ports:
-      - $FLASK_LOCAL_PORT:$FLASK_DOCKER_PORT
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url"  : "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$LIKE_SERVICE_DATABASE?allowPublicKeyRetrieval=true&useSSL=false",
+        "spring.datasource.username" : "$MYSQLDB_USER",
+        "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
+        "spring.jpa.hibernate.ddl-auto" : "update"
+        }'
     stdin_open: true
     tty: true
-    volumes:
-      - ./PostService/src:/usr/src/app/src
+
+  # vueapp:
+  #   depends_on:
+  #     - mysqldb
+  #   build: ./Pages/twitter-clone
+  #   ports:
+  #     - "8081:8081"
+  #   volumes:
+  #     - ./Pages/twitter-clone/src:/usr/src/app/src
+  #     - ./Pages/twitter-clone/public:/usr/src/app/public
+  #   container_name: vueapp
+  
+  # post_service:
+  #   depends_on:
+  #     - mysqldb
+  #   build: ./PostService
+  #   restart: on-failure
+  #   container_name: post_service
+  #   env_file: ./.env
+  #   ports:
+  #     - $FLASK_LOCAL_PORT:$FLASK_DOCKER_PORT
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - ./PostService/src:/usr/src/app/src
+  
+  redis-server:
+    image: redis
+    ports:
+      - "6379:6379"
 
 volumes:
   db:

@@ -11,7 +11,7 @@ CREATE TABLE `account` (
   `date_of_birth` varchar(255),
   `user_image` MEDIUMBLOB,
   `user_background_image` MEDIUMBLOB,
-  `date_of_create` DATE,
+  `create_date` DATE,
   `following_number` int NOT NULL default 0,
   `follower_number` int NOT NULL default 0,
   `delete_flag` int NOT NULL default 0,

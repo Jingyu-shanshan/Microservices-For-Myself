@@ -10,4 +10,6 @@ public interface IAccountService {
     Account updateAccount(Long id, Account account);
 
     void deleteAccount(Long id);
+
+    Account getAccount(String nameOrEmail);
 }

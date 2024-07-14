@@ -1,7 +1,7 @@
 accountService:
   replicas: 1
   image:
-    repository: microservices-for-myself_account_service
+    repository: microservices-for-myself_account-service
     tag: v1.0.1
 
 mysql:

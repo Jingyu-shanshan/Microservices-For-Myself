@@ -68,7 +68,6 @@ dependencies {
 
 
     // redis
-    implementation("redis.clients:jedis:5.1.0")
     implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.0")
 }
 

@@ -19,39 +19,45 @@ import java.util.Map;
 @Slf4j
 public class RedisService implements IRedisService {
     @Autowired
-    RedisTemplate<String, AccountLike> redisTemplate;
+    RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void saveLike(String likedAccountId, String likedPostId) {
-        String key = RedisKeyUtils.getLikedKey(likedAccountId, likedPostId);
-        redisTemplate.opsForHash().put(RedisKeyUtils.MAP_KEY_ACCOUNT_LIKED, key, LikedStatusEnum.LIKE.getCode());
+    public void saveLikePost(String accountId, String likedId) {
+        String key = RedisKeyUtils.getLikedKey(accountId, likedId);
+        redisTemplate.opsForHash().put(RedisKeyUtils.MAP_KEY_LIKED, key, LikedStatusEnum.LIKE.getCode());
     }
 
     @Override
-    public void unlikePost(String likedAccountId, String likedPostId) {
-        String key = RedisKeyUtils.getLikedKey(likedAccountId, likedPostId);
-        redisTemplate.opsForHash().put(RedisKeyUtils.MAP_KEY_ACCOUNT_LIKED, key, LikedStatusEnum.UNLIKE.getCode());
+    public void unlikePost(String accountId, String likedId) {
+        String key = RedisKeyUtils.getLikedKey(accountId, likedId);
+        redisTemplate.opsForHash().put(RedisKeyUtils.MAP_KEY_LIKED, key, LikedStatusEnum.UNLIKE.getCode());
     }
 
     @Override
-    public void deleteLike(String likedAccountId, String likedPostId) {
-        String key = RedisKeyUtils.getLikedKey(likedAccountId, likedPostId);
-        redisTemplate.opsForHash().delete(RedisKeyUtils.MAP_KEY_ACCOUNT_LIKED, key);
+    public void deleteLike(String accountId, String likedId) {
+        String key = RedisKeyUtils.getLikedKey(accountId, likedId);
+        redisTemplate.opsForHash().delete(RedisKeyUtils.MAP_KEY_LIKED, key);
     }
 
     @Override
-    public void incrementLikedCount(String likedAccountId) {
-        redisTemplate.opsForHash().increment(RedisKeyUtils.MAP_KEY_ACCOUNT_LIKED_COUNT, likedAccountId, 1);
+    public Boolean hasLikePost(String accountId, String likedId) {
+        String key = RedisKeyUtils.getLikedKey(accountId, likedId);
+        return redisTemplate.opsForHash().hasKey(RedisKeyUtils.MAP_KEY_LIKED, key);
     }
 
     @Override
-    public void decrementLikedCount(String likedAccountId) {
-        redisTemplate.opsForHash().increment(RedisKeyUtils.MAP_KEY_ACCOUNT_LIKED_COUNT, likedAccountId, -1);
+    public void incrementLikedCount(String likedId) {
+        redisTemplate.opsForHash().increment(RedisKeyUtils.MAP_KEY_LIKED_COUNT, likedId, 1);
+    }
+
+    @Override
+    public void decrementLikedCount(String likedId) {
+        redisTemplate.opsForHash().increment(RedisKeyUtils.MAP_KEY_LIKED_COUNT, likedId, -1);
     }
 
     @Override
     public List<AccountLike> getLikedDataFromRedis() {
-        Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(RedisKeyUtils.MAP_KEY_ACCOUNT_LIKED, ScanOptions.NONE);
+        Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(RedisKeyUtils.MAP_KEY_LIKED, ScanOptions.NONE);
         List<AccountLike> list = new ArrayList<>();
         while (cursor.hasNext()){
             Map.Entry<Object, Object> entry = cursor.next();
@@ -64,7 +70,7 @@ public class RedisService implements IRedisService {
             AccountLike userLike = new AccountLike(likedAccountId, likedPostId, value);
             list.add(userLike);
 
-            redisTemplate.opsForHash().delete(RedisKeyUtils.MAP_KEY_ACCOUNT_LIKED, key);
+            redisTemplate.opsForHash().delete(RedisKeyUtils.MAP_KEY_LIKED, key);
         }
 
         return list;

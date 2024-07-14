@@ -5,15 +5,17 @@ import com.microservices.entity.AccountLike;
 import java.util.List;
 
 public interface IRedisService {
-    void saveLike(String likedAccountId, String likedPostId);
+    void saveLikePost(String accountId, String likedId);
 
-    void unlikePost(String likedAccountId, String likedPostId);
+    void unlikePost(String accountId, String likedId);
 
-    void deleteLike(String likedAccountId, String likedPostId);
+    void deleteLike(String accountId, String likedId);
 
-    void incrementLikedCount(String likedAccountId);
+    Boolean hasLikePost(String accountId, String likedId);
 
-    void decrementLikedCount(String likedAccountId);
+    void incrementLikedCount(String likedId);
+
+    void decrementLikedCount(String likedId);
 
     List<AccountLike> getLikedDataFromRedis();
 

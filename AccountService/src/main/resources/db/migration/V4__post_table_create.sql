@@ -7,5 +7,6 @@ CREATE TABLE `post` (
   `type` varchar(255),
   `created_at` DATE,
   `account_number` varchar(255),
+  `like_count` int,
   PRIMARY KEY (`id`)
 );

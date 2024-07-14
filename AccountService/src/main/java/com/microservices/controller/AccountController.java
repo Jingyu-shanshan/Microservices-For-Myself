@@ -51,10 +51,12 @@ public class AccountController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<AccountDto> getAccountDetail() {
+    public ResponseEntity<AccountRoleDto> getAccountDetail() {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Account currentAccount = accountService.GetAccountDetail(currentUsername);
-        AccountDto accountDto = modelMapper.map(currentAccount, AccountDto.class);
+        AccountRoleDto accountDto = modelMapper.map(currentAccount, AccountRoleDto.class);
+        Set<RoleDto> roleDtos = currentAccount.getRoles().stream().map(item -> modelMapper.map(item, RoleDto.class)).collect(Collectors.toSet());
+        accountDto.setRoles(roleDtos);
         return ResponseEntity.ok(accountDto);
     }
 

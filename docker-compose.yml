@@ -80,19 +80,19 @@ services:
   #     - ./Pages/twitter-clone/public:/usr/src/app/public
   #   container_name: vueapp
   
-  # post-service:
-  #   depends_on:
-  #     - mysqldb
-  #   build: ./PostService
-  #   restart: on-failure
-  #   container_name: post-service
-  #   env_file: ./.env
-  #   ports:
-  #     - $FLASK_LOCAL_PORT:$FLASK_DOCKER_PORT
-  #   stdin_open: true
-  #   tty: true
-  #   volumes:
-  #     - ./PostService/src:/usr/src/app/src
+  post-service:
+    depends_on:
+      - mysqldb
+    build: ./PostService
+    restart: on-failure
+    container_name: post-service
+    env_file: ./.env
+    ports:
+      - $FLASK_LOCAL_PORT:$FLASK_DOCKER_PORT
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./PostService/src:/usr/src/app/src
   
   redis-server:
     container_name: redis-server

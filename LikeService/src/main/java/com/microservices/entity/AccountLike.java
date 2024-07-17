@@ -16,13 +16,13 @@ public class AccountLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String accountId;
+    private int accountId;
 
-    private String likedId;
+    private int likedId;
 
     private int status = LikedStatusEnum.UNLIKE.getCode();
 
-    public AccountLike(String accountId, String likedId, int status) {
+    public AccountLike(int accountId, int likedId, int status) {
         this.accountId = accountId;
         this.likedId = likedId;
         this.status = status;

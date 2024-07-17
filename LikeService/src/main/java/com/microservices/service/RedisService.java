@@ -63,8 +63,8 @@ public class RedisService implements IRedisService {
             Map.Entry<Object, Object> entry = cursor.next();
             String key = (String) entry.getKey();
             String[] split = key.split("::");
-            String likedAccountId = split[0];
-            String likedPostId = split[1];
+            int likedAccountId = Integer.parseInt(split[0]);
+            int likedPostId = Integer.parseInt(split[1]);
             int value = (int) entry.getValue();
 
             AccountLike userLike = new AccountLike(likedAccountId, likedPostId, value);

@@ -44,7 +44,7 @@ def get_incomes_by_id(post_id):
         if post is None:
             return jsonify({'message': 'Post not found'}), 404
 
-        result = json.dumps(post, sort_keys=False)
+        result = json.dumps(post.serialize_post())
         return result, 200, {'Content-Type': 'application/json'}
     except Exception as e:
         session.rollback()

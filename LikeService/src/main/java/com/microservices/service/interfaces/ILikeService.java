@@ -9,9 +9,9 @@ public interface ILikeService {
 
     void saveAll(List<AccountLike> accountLikes);
 
-    AccountLike getByAccountIdAndLikedId(String accountId, String likedId);
+    AccountLike getByAccountIdAndLikedId(int accountId, int likedId);
 
     void persistLikedFromRedis();
 
-    void likePost(String accountId, String likedId);
+    void likePost(int accountId, int likedId);
 }

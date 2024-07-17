@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface IAccountLikeRepository extends JpaRepository<AccountLike, Long> {
-    Optional<AccountLike> findByAccountIdAndLikedId(String accountId, String likedId);
+    Optional<AccountLike> findByAccountIdAndLikedId(int accountId, int likedId);
 }

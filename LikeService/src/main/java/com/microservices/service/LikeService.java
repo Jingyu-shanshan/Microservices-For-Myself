@@ -1,10 +1,15 @@
 package com.microservices.service;
 
 import com.microservices.entity.AccountLike;
+import com.microservices.exception.AccountApiException;
+import com.microservices.exception.ResourceNotFoundException;
+import com.microservices.pojo.Post;
 import com.microservices.repository.IAccountLikeRepository;
 import com.microservices.service.interfaces.ILikeService;
+import com.microservices.service.interfaces.IPostService;
 import com.microservices.service.interfaces.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +23,9 @@ public class LikeService implements ILikeService {
     @Autowired
     IRedisService redisService;
 
+    @Autowired
+    IPostService postService;
+
     @Override
     public void save(AccountLike accountLike) {
         accountLikeRepository.save(accountLike);
@@ -29,7 +37,7 @@ public class LikeService implements ILikeService {
     }
 
     @Override
-    public AccountLike getByAccountIdAndLikedId(String accountId, String likedId) {
+    public AccountLike getByAccountIdAndLikedId(int accountId, int likedId) {
         return accountLikeRepository.findByAccountIdAndLikedId(accountId, likedId).orElse(null);
     }
 
@@ -48,10 +56,18 @@ public class LikeService implements ILikeService {
     }
 
     @Override
-    public void likePost(String accountId, String likedId) {
-        if (!redisService.hasLikePost(accountId, likedId)){
-            redisService.saveLikePost(accountId, likedId);
-            redisService.incrementLikedCount(likedId);
+    public void likePost(int accountId, int likedId) {
+        Post post = postService.getPostById(likedId);
+        String stringAccountId = String.valueOf(accountId);
+        String stringLikedId = String.valueOf(likedId);
+
+        if(post == null){
+            throw new ResourceNotFoundException("Post", "id", likedId);
+        }
+
+        if (!redisService.hasLikePost(stringAccountId, stringLikedId)){
+            redisService.saveLikePost(stringAccountId, stringLikedId);
+            redisService.incrementLikedCount(stringLikedId);
         }
     }
 }

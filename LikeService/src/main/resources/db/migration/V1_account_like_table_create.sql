@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS `account_like`;
 CREATE TABLE `account_like` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `account_id` varchar(32),
-  `liked_id` varchar(32),
+  `account_id` int,
+  `liked_id` int,
   `status` tinyint(1) default '1',
   `create_date` DATE,
   `update_date` DATE,

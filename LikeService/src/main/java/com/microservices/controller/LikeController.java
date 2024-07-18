@@ -24,4 +24,10 @@ public class LikeController {
         likeService.likePost(accountId, postId);
         return new ResponseEntity<>("Liked!", HttpStatus.OK);
     }
+
+    @GetMapping("/unlike/{accountId}/{postId}")
+    public ResponseEntity<String> AccountUnlikePost(@PathVariable int accountId, @PathVariable int postId) {
+        likeService.unlikePost(accountId, postId);
+        return new ResponseEntity<>("Unliked!", HttpStatus.OK);
+    }
 }

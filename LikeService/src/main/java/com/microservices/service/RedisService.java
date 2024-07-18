@@ -22,7 +22,7 @@ public class RedisService implements IRedisService {
     RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void saveLikePost(String accountId, String likedId) {
+    public void likePost(String accountId, String likedId) {
         String key = RedisKeyUtils.getLikedKey(accountId, likedId);
         redisTemplate.opsForHash().put(RedisKeyUtils.MAP_KEY_LIKED, key, LikedStatusEnum.LIKE.getCode());
     }
@@ -43,6 +43,19 @@ public class RedisService implements IRedisService {
     public Boolean hasLikePost(String accountId, String likedId) {
         String key = RedisKeyUtils.getLikedKey(accountId, likedId);
         return redisTemplate.opsForHash().hasKey(RedisKeyUtils.MAP_KEY_LIKED, key);
+    }
+
+    @Override
+    public Boolean isLikedPost(String accountId, String likedId) {
+        String key = RedisKeyUtils.getLikedKey(accountId, likedId);
+        Object likedStatusEnumCode = redisTemplate.opsForHash().get(RedisKeyUtils.MAP_KEY_LIKED, key);
+
+        if (likedStatusEnumCode != null){
+            int code = Integer.parseInt(likedStatusEnumCode.toString());
+            return LikedStatusEnum.LIKE.getCode() == code;
+        }
+
+        return false;
     }
 
     @Override
@@ -67,8 +80,8 @@ public class RedisService implements IRedisService {
             int likedPostId = Integer.parseInt(split[1]);
             int value = (int) entry.getValue();
 
-            AccountLike userLike = new AccountLike(likedAccountId, likedPostId, value);
-            list.add(userLike);
+            AccountLike accountLike = new AccountLike(likedAccountId, likedPostId, value);
+            list.add(accountLike);
 
             redisTemplate.opsForHash().delete(RedisKeyUtils.MAP_KEY_LIKED, key);
         }

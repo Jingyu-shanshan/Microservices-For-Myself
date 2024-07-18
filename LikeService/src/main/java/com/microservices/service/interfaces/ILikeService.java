@@ -14,4 +14,6 @@ public interface ILikeService {
     void persistLikedFromRedis();
 
     void likePost(int accountId, int likedId);
+
+    void unlikePost(int accountId, int likedId);
 }

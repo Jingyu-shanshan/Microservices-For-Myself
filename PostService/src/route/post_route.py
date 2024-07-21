@@ -115,3 +115,27 @@ def delete_post(current_user, post_id):
         return jsonify({'error': str(e)}), 500
     finally:
         session.close()
+
+@post_api_bp.route('<int:post_id>', methods=['PATCH'])
+# @token_required
+def update_post_like_count(post_id):
+    try:
+        update_post_data = PostSchema().load(request.get_json())
+    except Exception as e:
+        return jsonify({'message': 'Validation error', 'errors': e.messages}), 400
+
+    session = Session()
+    try:
+        post = session.query(Post).filter_by(id=post_id).first()
+        if post is None:
+            return jsonify({'message': 'Post not found'}), 404
+
+        setattr(post, "like_count", update_post_data['like_count'])
+
+        session.commit()
+        return jsonify({'message': 'Post like_count updated successfully', 'post': PostSchema().dump(post)}), 200
+    except Exception as e:
+        session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        session.close()

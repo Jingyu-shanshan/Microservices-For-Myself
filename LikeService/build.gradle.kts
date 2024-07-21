@@ -41,7 +41,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security:3.2.3")
     implementation("org.springframework.boot:spring-boot-starter-cache:3.3.0")
 
-
     // mysql
     implementation("mysql:mysql-connector-java:8.0.31")
     implementation("org.flywaydb:flyway-core:9.21.1")
@@ -66,9 +65,14 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
 
-
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.0")
+
+    // Quartz
+    implementation("org.quartz-scheduler:quartz:2.3.2")
+
+    // Http client
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
 }
 
 // remove SNAPSHOT-PLAIN.jar

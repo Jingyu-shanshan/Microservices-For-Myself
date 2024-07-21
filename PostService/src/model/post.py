@@ -17,11 +17,12 @@ class Post(Base):
     type = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=dt.datetime.utcnow)
     account_number = Column(String(255), nullable=True)
+    like_count = Column(Integer, nullable=False, default=0)
 
     comments = relationship("Comment", back_populates="post")
 
     def __repr__(self):
-        return f'<Post(title={self.title})>'
+        return f'<Post(id={self.id}, title={self.title})>'
     
     def serialize_post(self):
         return {
@@ -32,6 +33,7 @@ class Post(Base):
             "type": self.type,
             "created_at": self.created_at.strftime("%Y-%m-%d"),
             "account_number": self.account_number,
+            "like_count": self.like_count,
             "comments": [comment.serialize_comment() for comment in self.comments]
         }
 
@@ -42,6 +44,7 @@ class PostSchema(Schema):
     content = fields.Str()
     type = fields.Str()
     created_at = fields.Date()
+    like_count = fields.Integer()
 
 class Comment(Base):
     __tablename__ = 'comment'

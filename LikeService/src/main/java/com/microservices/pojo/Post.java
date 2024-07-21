@@ -1,5 +1,6 @@
 package com.microservices.pojo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,5 +12,6 @@ import lombok.Setter;
 @Setter
 public class Post {
     private int Id;
-    private boolean isLike;
+    @JsonProperty("like_count")
+    private int likeCount;
 }

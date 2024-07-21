@@ -2,6 +2,7 @@ package com.microservices.service;
 
 import com.microservices.constant.LikedStatusEnum;
 import com.microservices.entity.AccountLike;
+import com.microservices.pojo.Post;
 import com.microservices.service.interfaces.IRedisService;
 import com.microservices.utils.RedisKeyUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -87,5 +88,21 @@ public class RedisService implements IRedisService {
         }
 
         return list;
+    }
+
+    @Override
+    public List<Post> getLikedCountFromRedis() {
+        Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(RedisKeyUtils.MAP_KEY_LIKED_COUNT, ScanOptions.NONE);
+        List<Post> posts = new ArrayList<>();
+        while (cursor.hasNext()){
+            Map.Entry<Object, Object> entry = cursor.next();
+            String key = (String) entry.getKey();
+            Post post = new Post(Integer.parseInt(key), (Integer) entry.getValue());
+            posts.add(post);
+
+            redisTemplate.opsForHash().delete(RedisKeyUtils.MAP_KEY_LIKED_COUNT, key);
+        }
+
+        return posts;
     }
 }

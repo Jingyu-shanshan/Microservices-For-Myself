@@ -24,7 +24,7 @@ public class AccountService implements IAccountService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
         String url = "http://" + host + "/api/account/get";
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
         Account account = restTemplate.exchange(url, HttpMethod.GET, entity, Account.class).getBody();
 
         if (account == null){

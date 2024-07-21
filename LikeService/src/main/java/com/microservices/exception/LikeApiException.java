@@ -5,13 +5,13 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
-public class AccountApiException extends RuntimeException {
+public class LikeApiException extends RuntimeException {
 
     @Getter
     private HttpStatus status;
     private String message;
 
-    public AccountApiException(String message, HttpStatus status, String errorMessage) {
+    public LikeApiException(String message, HttpStatus status, String errorMessage) {
         super(message);
         this.status = status;
         this.message = errorMessage;

@@ -54,6 +54,19 @@ public class LikeService implements ILikeService {
     }
 
     @Override
+    public void persistLikedCountFromRedis() {
+        List<Post> postListFromRedis = redisService.getLikedCountFromRedis();
+        for(Post postFromRedis : postListFromRedis){
+            Post post = postService.getPostById(postFromRedis.getId());
+            if (post != null){
+                int likeCount = post.getLikeCount() + postFromRedis.getLikeCount();
+                post.setLikeCount(likeCount);
+                postService.update(post);
+            }
+        }
+    }
+
+    @Override
     public void likePost(int accountId, int likedId) {
         Post post = postService.getPostById(likedId);
         String stringAccountId = String.valueOf(accountId);

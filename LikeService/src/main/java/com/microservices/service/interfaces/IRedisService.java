@@ -1,6 +1,7 @@
 package com.microservices.service.interfaces;
 
 import com.microservices.entity.AccountLike;
+import com.microservices.pojo.Post;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface IRedisService {
 
     List<AccountLike> getLikedDataFromRedis();
 
+    List<Post> getLikedCountFromRedis();
 }
